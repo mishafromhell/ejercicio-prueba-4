@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dental Playa</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-image: url('https://github.com/Per-Arredondo/Clinica_medica/blob/main/Fondo%20JPG.jpeg?raw=true');
+      background-size: cover;
+      background-position: center;
+    }
+    .accordion-content {
+      display: none;
+    }
+    .accordion.active .accordion-content {
+      display: block;
+    }
+  </style>
+</head>
+<body class="text-gray-800 bg-opacity-90 bg-white">
+  <div class="max-w-5xl mx-auto p-4">
+    <!-- Encabezado -->
+    <div class="text-center text-4xl font-bold text-purple-700 mb-4">Dental Playa</div>
+
+    <!-- Portada dinámica -->
+    <div class="mb-6">
+      <img id="portada" src="https://images.unsplash.com/photo-1588776814546-ec7e903f4f27?auto=format&fit=crop&w=1050&q=80" 
+           class="rounded-2xl shadow-lg w-full transition duration-500 ease-in-out" 
+           alt="Portada clínica" />
+    </div>
+
+    <!-- Sección Institucional -->
+    <section class="bg-white bg-opacity-90 rounded-2xl p-6 shadow-md mb-6">
+      <h2 class="text-2xl font-bold text-purple-700 mb-2">¿Quiénes somos?</h2>
+      <p>Somos una clínica dental dedicada a brindar atención con enfoque humano, profesional y actualizado.</p>
+      <h2 class="text-xl font-semibold text-purple-600 mt-4">Misión</h2>
+      <p>Brindar atención médica dental integral, accesible y de calidad.</p>
+      <h2 class="text-xl font-semibold text-purple-600 mt-4">Visión</h2>
+      <p>Ser una clínica referente por excelencia, trato humano y compromiso con la salud y estética dental.</p>
+      <h2 class="text-xl font-semibold text-purple-600 mt-4">Valores</h2>
+      <ul class="list-disc list-inside">
+        <li>Ética profesional</li>
+        <li>Empatía</li>
+        <li>Diversidad</li>
+        <li>Honestidad</li>
+        <li>Responsabilidad</li>
+      </ul>
+    </section>
+
+    <!-- Especialidades -->
+    <section class="bg-white bg-opacity-90 rounded-2xl p-6 shadow-md mb-6">
+      <h2 class="text-2xl font-bold text-purple-700 mb-4">Especialidades</h2>
+      <div id="especialidades"></div>
+    </section>
+
+    <!-- Formulario -->
+    <section class="bg-white bg-opacity-90 rounded-2xl p-6 shadow-md">
+      <h2 class="text-2xl font-bold text-purple-700 mb-4">Agendar Cita</h2>
+      <form id="citaForm" class="space-y-4">
+        <input type="text" name="nombre" placeholder="🧑 Nombre completo" required class="w-full p-2 rounded-xl border shadow" />
+        <input type="tel" name="telefono" placeholder="📱 Teléfono (10 dígitos)" pattern="\d{10}" required class="w-full p-2 rounded-xl border shadow" />
+        <input type="email" name="correo" placeholder="📧 Correo electrónico" required class="w-full p-2 rounded-xl border shadow" />
+
+        <select name="sexo" required class="w-full p-2 rounded-xl border shadow">
+          <option value="">⚧️ Sexo</option>
+          <option>Femenino</option>
+          <option>Masculino</option>
+          <option>Otro</option>
+        </select>
+
+        <select name="especialidad" required class="w-full p-2 rounded-xl border shadow">
+          <option value="">🦷 Especialidad</option>
+          <option>Limpieza dental</option>
+          <option>Blanqueamiento</option>
+          <option>Extracciones</option>
+          <option>Resinas dentales</option>
+          <option>Diseño de sonrisa</option>
+          <option>Carillas</option>
+          <option>Endodoncia</option>
+          <option>Periodoncia</option>
+          <option>Cirugía</option>
+          <option>Implantes dentales</option>
+          <option>Prótesis fija y removible</option>
+          <option>Coronas libres de metal CAD-CAM</option>
+        </select>
+
+        <input type="date" name="fecha" required class="w-full p-2 rounded-xl border shadow" />
+        <input type="time" name="hora" required class="w-full p-2 rounded-xl border shadow" />
+        <textarea name="comentarios" placeholder="💬 Comentarios" class="w-full p-2 rounded-xl border shadow"></textarea>
+
+        <button type="submit" class="bg-purple-600 text-white p-2 rounded-xl shadow hover:bg-purple-700">Agendar Cita</button>
+        <p id="confirmacion" class="text-green-600 mt-2 hidden"></p>
+      </form>
+    </section>
+  </div>
+
+  <script>
+    // Imágenes para portada dinámica
+    const imagenesPortada = [
+      "https://images.unsplash.com/photo-1588776814546-ec7e903f4f27?auto=format&fit=crop&w=1050&q=80",
+      "https://images.unsplash.com/photo-1588774069262-2fdc6e39c206?auto=format&fit=crop&w=1050&q=80",
+      "https://images.unsplash.com/photo-1606813909028-1c8fa8e1c4eb?auto=format&fit=crop&w=1050&q=80"
+    ];
+    let index = 0;
+    const portada = document.getElementById("portada");
+    portada.addEventListener("mouseenter", () => {
+      index = (index + 1) % imagenesPortada.length;
+      portada.src = imagenesPortada[index];
+    });
+
+    // Especialidades dinámicas con acordeón
+    const especialidades = [
+      { nombre: "Limpieza dental", desc: "Eliminación de sarro y placa para prevenir enfermedades." },
+      { nombre: "Blanqueamiento", desc: "Tratamiento para aclarar el color de los dientes." },
+      { nombre: "Extracciones", desc: "Remoción de dientes dañados o problemáticos." },
+      { nombre: "Resinas dentales", desc: "Restauraciones estéticas de cavidades o fracturas." },
+      { nombre: "Diseño de sonrisa", desc: "Planificación estética personalizada de la sonrisa." },
+      { nombre: "Carillas", desc: "Laminados que cubren imperfecciones en dientes frontales." },
+      { nombre: "Endodoncia", desc: "Tratamiento de conductos radiculares (nervio)." },
+      { nombre: "Periodoncia", desc: "Tratamiento de encías y tejidos de soporte dental." },
+      { nombre: "Cirugía", desc: "Procedimientos quirúrgicos orales especializados." },
+      { nombre: "Implantes dentales", desc: "Sustitución de dientes perdidos con tornillos de titanio." },
+      { nombre: "Prótesis fija y removible", desc: "Reemplazo de piezas dentales mediante aparatos dentales." },
+      { nombre: "Coronas libres de metal CAD-CAM", desc: "Rehabilitación estética con tecnología de alta precisión." }
+    ];
+
+    const container = document.getElementById('especialidades');
+    especialidades.forEach(({nombre, desc}) => {
+      const block = document.createElement('div');
+      block.className = 'accordion bg-purple-100 rounded-xl mb-2 p-3 shadow cursor-pointer';
+      block.innerHTML = `<div class="font-semibold text-purple-800">${nombre}</div><div class="accordion-content mt-2 text-sm">${desc}</div>`;
+      block.onclick = () => block.classList.toggle('active');
+      container.appendChild(block);
+    });
+
+    // Envío de formulario
+    document.getElementById("citaForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const data = new FormData(form);
+
+      try {
+        await fetch("https://script.google.com/macros/s/AKfycbx_hsa3LlDTd26XS65N44AYzo6ZE279XYjlcLx5HvxDnTmWWr1678pqXcTO2iuSChJhMQ/exec", {
+          method: "POST",
+          body: data
+        });
+
+        const mensaje = document.getElementById("confirmacion");
+        mensaje.classList.remove("hidden");
+        mensaje.innerHTML = "✅ Gracias, tu cita ha sido agendada.<br>⏳ Redirigiendo al inicio...<br>🎉 Te contactaremos pronto.";
+
+        setTimeout(() => {
+          mensaje.classList.add("hidden");
+          form.reset();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 5000);
+      } catch (error) {
+        alert("❌ Error al enviar el formulario. Intenta de nuevo más tarde.");
+      }
+    });
+  </script>
+</body>
+</html>
